@@ -1,5 +1,8 @@
-package com.practice.weatherapplication.screens
+package com.practice.weatherapplication.screens.splash
 
+import android.view.animation.OvershootInterpolator
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,9 +25,31 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.practice.weatherapplication.R
+import com.practice.weatherapplication.navigation.WeatherScreens
+import kotlinx.coroutines.delay
 
 @Composable
 fun WeatherSplashScreen(navController: NavController) {
+  //val defaultCity = stringResource(R.string.default_city)
+  val scale = remember {
+	Animatable(0f)
+  }
+
+  LaunchedEffect(key1 = true, block = {
+	scale.animateTo(
+	  targetValue = 0.9f,
+	  animationSpec = tween(
+		durationMillis = 800,
+		easing = {
+		  OvershootInterpolator(8f)
+			.getInterpolation(it)
+		})
+	)
+
+	delay(2000L)
+	navController.navigate(WeatherScreens.MainScreen.name)
+  })
+
   Surface(
 	modifier = Modifier
 	  .padding(15.dp)
@@ -43,7 +70,7 @@ fun WeatherSplashScreen(navController: NavController) {
 		modifier = Modifier.size(95.dp)
 	  )
 	  Text(
-		text = "Find the Sun",
+		text = "Find the Sun?",
 		style = MaterialTheme.typography.headlineSmall,
 		color = Color.LightGray
 
