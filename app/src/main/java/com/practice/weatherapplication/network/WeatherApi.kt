@@ -1,6 +1,7 @@
 package com.practice.weatherapplication.network
 
-import com.practice.weatherapplication.models.weather.WeatherObject
+import com.practice.weatherapplication.models.geocoordinates.DirectGeoCoordinate
+import com.practice.weatherapplication.models.weather.Weather
 import com.practice.weatherapplication.utils.Constants
 import jakarta.inject.Singleton
 import retrofit2.http.GET
@@ -13,5 +14,11 @@ interface WeatherApi {
 	@Query("q") query: String,
 	@Query("units") units: String = "imperial",
 	@Query("appid") appid: String = Constants.API_KEY
-  ): WeatherObject
+  ): Weather
+
+  @GET(value = Constants.CITY_GEO_COORDINATE_PATH)
+  suspend fun getCityGeoCoordinates(
+	@Query("q") query: String,
+	@Query("appid") appid: String = Constants.API_KEY
+  ): DirectGeoCoordinate
 }
